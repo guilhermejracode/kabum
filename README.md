@@ -56,7 +56,6 @@ Execute as migrações (caso existam)
     ```
     
 ## 🏗 Estrutura do Projeto
-    ```bash
     📂 kabum/
     │── 📂 app/
     │   ├── 📂 controllers/   # Lógica do fluxo de dados
@@ -67,7 +66,6 @@ Execute as migrações (caso existam)
     │── 📂 tests/             # Testes automatizados com PHPUnit
     │── 📝 README.md
     │── 📄 index.php
-    ´´´
 
 ## ✅ Rodando Testes
 
