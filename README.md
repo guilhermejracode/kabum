@@ -41,10 +41,10 @@ Execute as migrações (caso existam)
 
 3. Edite o arquivo config/Database.php e adicione as credenciais do banco:
     ```php
-    define('DB_HOST', 'localhost');
-    define('DB_NAME', 'seu_banco');
-    define('DB_USER', 'seu_usuario');
-    define('DB_PASS', 'sua_senha');
+    private $host = 'host_do_servidor_MySQL';
+    private $db_name = 'nome_do_banco';
+    private $username = 'seu_usuario';
+    private $password = 'sua_senha';
     ```
 4. Utilize um servidor local para rodar o projeto:
     ```sh
