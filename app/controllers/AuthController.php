@@ -16,7 +16,7 @@ class AuthController {
                 $this->usuarioService->autenticar($dados);
                 header('Location: '.UrlHelper::baseURL().'/home');
             } catch (Exception $e) {
-                $_SESSION['erro_cadastro'] = $e->getMessage();
+                $_SESSION['msg_login'] = $e->getMessage();
                 header('Location: '.UrlHelper::baseURL().'/login');
             }
         }
@@ -24,8 +24,6 @@ class AuthController {
             $data = ['titulo' => 'Login'];
             View::render('auth/login', $data, 'layouts/login');
         }
-
-
     }
 
     public function logout() {

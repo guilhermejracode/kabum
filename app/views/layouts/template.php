@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<!-- Navbar para dispositivos pequenos -->
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-lg-none">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Portal Kabum</a>
@@ -43,7 +43,7 @@
 <div class="container-fluid">
     <div class="row">
 
-        <!-- Sidebar fixa no lado esquerdo (visível apenas em telas grandes) -->
+        <!-- Sidebar -->
         <aside class="col-lg-2 d-none d-lg-block bg-primary text-white border-end min-vh-100 position-fixed start-0 p-3">
             <h4 class="text-center">Portal Kabum</h4>
             <div class="text-center">
@@ -74,7 +74,7 @@
 
         <!-- Conteúdo principal -->
         <main class="col-lg-10 offset-lg-2 py-4">
-            <?= $content ?> <!-- Aqui será carregado o conteúdo das views -->
+            <?= $content ?>
         </main>
 
     </div>
@@ -90,10 +90,17 @@
 <script src="<?= UrlHelper::baseURL() ?>/public/js/jquery-inputmask.js"></script>
 <script>
     $(document).ready(function() {
-        // Aplica as máscaras nos campos existentes
         $('#cpf').inputmask('999.999.999-99');
         $('#telefone').inputmask('(99) 99999-9999');
-        $('.cep').inputmask('99999-999');
+        $('.cep').inputmask('99999-999', {
+            placeholder: '_',
+            showMaskOnHover: false,
+            clearIncomplete: true,
+            onincomplete: function() {
+                alert('Por favor, preencha o CEP corretamente com 8 dígitos.');
+                $(this).val('');
+            }
+        });
     });
 </script>
 </body>

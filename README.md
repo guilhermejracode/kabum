@@ -61,13 +61,13 @@ Antes de começar, certifique-se de ter instalado:
     
     CREATE TABLE enderecos (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        cliente_id INT NOT NULL,
         logradouro VARCHAR(255) NOT NULL,
         numero varchar(10) NOT NULL,
         bairro varchar(100) NOT NULL,
         cidade VARCHAR(100) NOT NULL,
         estado VARCHAR(100) NOT NULL,
         cep VARCHAR(10) NOT NULL,
-        cliente_id INT NOT NULL,
         FOREIGN KEY (cliente_id) REFERENCES clientes(id)
     );
     ```

@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="col">
                                     <label class="form-label">CEP</label>
-                                    <input type="text" class="form-control cep" name="enderecos[0][cep]">
+                                    <input type="text" class="form-control cep" name="enderecos[0][cep]" minlength="8">
                                 </div>
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                                     </div>
                                     <div class="col">
                                         <label class="form-label">CEP</label>
-                                        <input type="text" class="form-control cep" name="enderecos[<?= $k ?>][cep]" value="<?= $end['cep'] ?>">
+                                        <input type="text" class="form-control cep" name="enderecos[<?= $k ?>][cep]" value="<?= $end['cep'] ?>" minlength="8">
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +163,7 @@
                 </div>
                 <div class="col">
                     <label class="form-label">CEP</label>
-                    <input type="text" class="form-control cep" name="enderecos[\${index}][cep]">
+                    <input type="text" class="form-control cep" name="enderecos[\${index}][cep]" minlength="8">
                 </div>
             </div>
         </div>
@@ -171,7 +171,15 @@
 
         enderecosDiv.insertAdjacentHTML('beforeend', enderecoHtml);
 
-        $('.cep').inputmask('99999-999');
+        $('.cep').inputmask('99999-999', {
+            placeholder: '_',
+            showMaskOnHover: false,
+            clearIncomplete: true,
+            onincomplete: function() {
+                alert('Por favor, preencha o CEP corretamente com 8 dígitos.');
+                $(this).val('');
+            }
+        });
         addRemoveEnderecoListeners();
     });
 

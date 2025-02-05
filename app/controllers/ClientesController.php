@@ -22,11 +22,14 @@ class ClientesController {
                 header('Location: '.UrlHelper::baseURL().'/clientes/listar');
             } catch (Exception $e) {
                 $_SESSION['erro_cadastro'] = $e->getMessage();
+                $data['titulo'] = 'Cadastrar cliente';
+                View::render('clientes/core', $data);
             }
         }
-
-        $data['titulo'] = 'Cadastrar cliente';
-        View::render('clientes/core', $data);
+        else{
+            $data['titulo'] = 'Cadastrar cliente';
+            View::render('clientes/core', $data);
+        }
 
     }
 
@@ -49,7 +52,7 @@ class ClientesController {
             } catch (Exception $e) {
                 $_SESSION['erro_cadastro'] = $e->getMessage();
             }
-            header('Location: '.UrlHelper::baseURL().'/clientes');
+            header('Location: '.UrlHelper::baseURL().'/clientes/editar/'.$clienteId);
         } else {
             try {
                 $data['titulo'] = 'Editar Cliente';
@@ -59,7 +62,7 @@ class ClientesController {
                 View::render('clientes/core', $data);
             } catch (Exception $e) {
                 $_SESSION['erro_cadastro'] = $e->getMessage();
-                header('Location: '.UrlHelper::baseURL().'/clientes');
+                header('Location: '.UrlHelper::baseURL().'/clientes/editar/'.$clienteId);
             }
         }
     }

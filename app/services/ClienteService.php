@@ -13,10 +13,14 @@ class ClienteService {
     }
 
     public function cadastrar(array $dados) {
-        $enderecos = $dados['enderecos']; // Array de endereços
+
+        if (empty($dados['enderecos'])) {
+            throw new Exception("Pelo menos um endereço deve ser informado!");
+        }
+
+        $enderecos = $dados['enderecos'];
         unset($dados['enderecos']);
 
-        // Regras de validação antes de salvar
         $validacaoCliente = '';
         if (empty($dados['nome'])) {
             $validacaoCliente .="O nome do cliente é obrigatório!<br/>";
@@ -55,7 +59,7 @@ class ClienteService {
 
                 $this->clienteModel->commit();
             }
-            else{
+            else {
                 throw new Exception("Não foi possível inserir o cliente!");
             }
 
@@ -82,23 +86,42 @@ class ClienteService {
             throw new Exception("Cliente não encontrado!");
         }
 
-        $enderecos = $dados['enderecos']; // Array de endereços
+        if (empty($dados['enderecos'])) {
+            throw new Exception("Pelo menos um endereço deve ser informado!");
+        }
+
+        $enderecos = $dados['enderecos'];
         unset($dados['enderecos']);
 
         $clienteAtualizado = $this->clienteModel->atualizarCliente($clienteId, $dados);
 
-        if ($clienteAtualizado) {
-            // Remove os endereços antigos
-            $this->clienteModel->removerEnderecosPorCliente($clienteId);
+        try {
+            if ($clienteAtualizado) {
 
-            // Adiciona os novos endereços
-            foreach ($enderecos as $endereco) {
-                if(!empty($endereco['logradouro'])) {
-                    $this->clienteModel->cadastrarEndereco($endereco, $clienteId);
+                $this->clienteModel->beginTransaction();
+
+                $this->clienteModel->removerEnderecosPorCliente($clienteId);
+
+                foreach ($enderecos as $endereco) {
+                    if (!empty($endereco['logradouro']) && !empty($endereco['numero']) && !empty($endereco['bairro'])
+                        && !empty($endereco['cidade']) && !empty($endereco['estado']) && !empty($endereco['cep'])) {
+                        $this->clienteModel->cadastrarEndereco($endereco, $clienteId);
+                    }
+                    else {
+                        throw new Exception("Todos os dados do endereço devem ser preenchidos!");
+                    }
                 }
+
+                $this->clienteModel->commit();
+
             }
-        } else {
-            throw new Exception("Erro ao editar cliente! Verifique e tente novamente.");
+            else {
+                throw new Exception("Erro ao editar cliente! Verifique e tente novamente.");
+            }
+        }
+        catch (Exception $e) {
+            $this->clienteModel->rollback();
+            throw $e;
         }
 
     }
