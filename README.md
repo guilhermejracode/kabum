@@ -30,8 +30,8 @@ Antes de começar, certifique-se de ter instalado:
 
 1. Clone o repositório:  
    ```sh
-   git clone https://github.com/seu-usuario/portal-administrativo.git
-   cd portal-administrativo
+   git clone https://github.com/guilhermejracode/kabum.git
+   cd kabum
    ```
 
 2. Configure o banco de dados:
@@ -48,23 +48,23 @@ Execute as migrações (caso existam)
     ```
 4. Utilize um servidor local para rodar o projeto:
     ```sh
-    php -S localhost:8000 -t public
+    php -S localhost:8000/kabum -t public
     ```
 5. Acesse o sistema no navegador:
     ```bash
-    http://localhost:8000/login
+    http://localhost:8000/kabum/login
     ```
     
 ## 🏗 Estrutura do Projeto
     ```bash
-    📂 portal-administrativo/
-    │── 📂 App/
-    │   ├── 📂 Controllers/   # Lógica do fluxo de dados
-    │   ├── 📂 Models/        # Manipulação de dados com o banco
-    │   ├── 📂 Views/         # Interface com o usuário
-    │── 📂 Public/            # Arquivos CSS, JS e imagens
-    │── 📂 Config/            # Arquivos de configuração, helpers e utilits (ex: Database.php, UrlHelper.php)
-    │── 📂 Tests/             # Testes automatizados com PHPUnit
+    📂 kabum/
+    │── 📂 app/
+    │   ├── 📂 controllers/   # Lógica do fluxo de dados
+    │   ├── 📂 models/        # Manipulação de dados com o banco
+    │   ├── 📂 views/         # Interface com o usuário
+    │── 📂 public/            # Arquivos CSS, JS e imagens
+    │── 📂 config/            # Arquivos de configuração, helpers e utilits (ex: Database.php, UrlHelper.php)
+    │── 📂 tests/             # Testes automatizados com PHPUnit
     │── 📝 README.md
     │── 📄 index.php
     ´´´
