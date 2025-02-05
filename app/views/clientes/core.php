@@ -38,7 +38,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="cpf" class="form-label">CPF</label>
-                    <input type="text" class="form-control" id="cpf" name="cpf" value="<?= !empty($cliente['cpf']) ? $cliente['cpf'] : (!empty($_POST['cpf']) ? $_POST['cpf'] : '') ?>" required>
+                    <input type="text" class="form-control" <?= !empty($cliente['id']) ? 'disabled="disabled"' : '' ?> id="cpf" name="cpf" value="<?= !empty($cliente['cpf']) ? $cliente['cpf'] : (!empty($_POST['cpf']) ? $_POST['cpf'] : '') ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="rg" class="form-label">RG</label>

@@ -16,11 +16,11 @@ class ClienteModelTest extends TestCase {
 
     public function testCadastrarClienteEEndereco() {
         // Simulação de dados do cliente
-        $nome = "Carlos Silva";
-        $dataNascimento = "1990-05-20";
-        $cpf = "12345678900";
-        $rg = "1234567";
-        $telefone = "11999999999";
+        $dadosCliente['nome'] = "Carlos Silva";
+        $dadosCliente['data_nascimento'] = "1990-05-20";
+        $dadosCliente['cpf'] = "12345678900";
+        $dadosCliente['rg'] = "1234567";
+        $dadosCliente['telefone'] = "11999999999";
         $usuario_id = 1;
 
         // Simulação de endereços
@@ -35,17 +35,17 @@ class ClienteModelTest extends TestCase {
         // Cria um contador para verificar quantas vezes cadastrarEndereco foi chamado corretamente
         $this->clienteModel->expects($this->exactly(2)) // Precisamos de 2 chamadas
         ->method('cadastrarEndereco')
-            ->willReturnCallback(function ($clienteId, $logradouro, $numero, $bairro, $cidade, $estado, $cep) use ($enderecos) {
+            ->willReturnCallback(function ($dadoEndereco, $clienteId) use ($enderecos) {
                 // Verifica se um dos endereços está na lista esperada
                 foreach ($enderecos as $endereco) {
                     if (
                         $clienteId === 10 &&
-                        $logradouro === $endereco['logradouro'] &&
-                        $numero === $endereco['numero'] &&
-                        $bairro === $endereco['bairro'] &&
-                        $cidade === $endereco['cidade'] &&
-                        $estado === $endereco['estado'] &&
-                        $cep === $endereco['cep']
+                        $dadoEndereco['logradouro'] === $endereco['logradouro'] &&
+                        $dadoEndereco['numero'] === $endereco['numero'] &&
+                        $dadoEndereco['bairro'] === $endereco['bairro'] &&
+                        $dadoEndereco['cidade'] === $endereco['cidade'] &&
+                        $dadoEndereco['estado'] === $endereco['estado'] &&
+                        $dadoEndereco['cep'] === $endereco['cep']
                     ) {
                         return true;
                     }
@@ -54,12 +54,12 @@ class ClienteModelTest extends TestCase {
             });
 
         // Testa se o cliente é cadastrado corretamente
-        $clienteId = $this->clienteModel->cadastrarCliente($nome, $dataNascimento, $cpf, $rg, $telefone, $usuario_id);
+        $clienteId = $this->clienteModel->cadastrarCliente($dadosCliente, $usuario_id);
         $this->assertEquals(10, $clienteId); // Esperamos que retorne ID 10
 
         // Verifica se os endereços foram cadastrados corretamente
         foreach ($enderecos as $endereco) {
-            $resultado = $this->clienteModel->cadastrarEndereco($clienteId, $endereco['logradouro'], $endereco['numero'], $endereco['bairro'], $endereco['cidade'], $endereco['estado'], $endereco['cep']);
+            $resultado = $this->clienteModel->cadastrarEndereco($endereco, $clienteId);
             $this->assertTrue($resultado);
         }
     }

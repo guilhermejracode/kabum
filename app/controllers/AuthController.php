@@ -1,30 +1,31 @@
 <?php
-require_once 'app/models/UsuarioModel.php';
 
 class AuthController {
+
+    private $usuarioService;
+
+    public function __construct() {
+        $this->usuarioService = new UsuarioService();
+    }
+
     public function login() {
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nome_usuario = $_POST['nome_usuario'];
-            $senha = $_POST['senha'];
-
-            $usuarioModel = new UsuarioModel();
-            $usuarioData = $usuarioModel->buscaUsuario($nome_usuario);
-
-            if ($usuarioData && password_verify($senha, $usuarioData['senha'])) {
-                session_start();
-                $_SESSION['usuario_id'] = $usuarioData['id'];  // ID do usuário
-                $_SESSION['usuario_nome'] = $usuarioData['nome_usuario'];
+            try {
+                $dados = $_POST;
+                $this->usuarioService->autenticar($dados);
                 header('Location: '.UrlHelper::baseURL().'/home');
-
-            } else {
-                $_SESSION['msg_login'] = "Usuário ou Senha inválido!";
+            } catch (Exception $e) {
+                $_SESSION['erro_cadastro'] = $e->getMessage();
                 header('Location: '.UrlHelper::baseURL().'/login');
             }
-
-        } else {
+        }
+        else{
             $data = ['titulo' => 'Login'];
             View::render('auth/login', $data, 'layouts/login');
         }
+
+
     }
 
     public function logout() {

@@ -4,6 +4,7 @@ spl_autoload_register(function ($className) {
     // Define os diretórios onde o autoloader deve procurar as classes
     $directories = [
         'app/controllers/',    // Controllers
+        'app/services/',       // Serviços
         'app/models/',         // Models
         'app/config/',         // Configurações
         'app/tests/'           // Testes

@@ -73,7 +73,7 @@ Execute as migrações (caso existam)
     ```sh
     composer require --dev phpunit/phpunit
     ```
-2. Instale o PHPUnit via Composer (se ainda não tiver):
+2. Execute os testes automatizados:
     ```sh
     vendor/bin/phpunit --testdox
     ```

@@ -51,8 +51,8 @@
                         <td><?php echo $cliente['nome']; ?></td>
                         <td><?php echo $cliente['cpf']; ?></td>
                         <td>
-                            <a href="editar/<?php echo $cliente['id']; ?>" class="btn btn-outline-kabum">Editar</a>
-                            <a href="excluir/<?php echo $cliente['id']; ?>" class="btn btn-outline-kabum">Excluir</a>
+                            <a href="<?= UrlHelper::baseURL() ?>/clientes/editar/<?php echo $cliente['id']; ?>" class="btn btn-outline-kabum">Editar</a>
+                            <a href="<?= UrlHelper::baseURL() ?>/clientes/excluir/<?php echo $cliente['id']; ?>" class="btn btn-outline-kabum">Excluir</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

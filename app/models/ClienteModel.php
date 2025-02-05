@@ -9,6 +9,12 @@ class ClienteModel {
         $this->pdo = $database->getConnection(); // Obtém a conexão do banco de dados
     }
 
+    public function existeCPF($cpf) {
+        $stmt = $this->pdo->prepare('SELECT * FROM clientes WHERE cpf = :cpf');
+        $stmt->execute([':cpf' => $cpf]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function buscarTodos() {
         $stmt = $this->pdo->prepare('SELECT * FROM clientes');
         $stmt->execute();
@@ -30,18 +36,18 @@ class ClienteModel {
     /**
      * Cadastra um cliente no banco de dados
      */
-    public function cadastrarCliente($nome, $dataNascimento, $cpf, $rg, $telefone, $usuario_id) {
+    public function cadastrarCliente($dados) {
         try {
             $stmt = $this->pdo->prepare("
                 INSERT INTO clientes (nome, data_nascimento, cpf, rg, telefone, usuario_id) 
                 VALUES (:nome, :data_nascimento, :cpf, :rg, :telefone, :usuario_id)
             ");
-            $stmt->bindParam(':nome', $nome);
-            $stmt->bindParam(':data_nascimento', $dataNascimento);
-            $stmt->bindParam(':cpf', $cpf);
-            $stmt->bindParam(':rg', $rg);
-            $stmt->bindParam(':telefone', $telefone);
-            $stmt->bindParam(':usuario_id', $usuario_id);
+            $stmt->bindParam(':nome', $dados['nome']);
+            $stmt->bindParam(':data_nascimento', $dados['data_nascimento']);
+            $stmt->bindParam(':cpf', $dados['cpf']);
+            $stmt->bindParam(':rg', $dados['rg']);
+            $stmt->bindParam(':telefone', $dados['telefone']);
+            $stmt->bindParam(':usuario_id', $dados['usuario_id']);
             $stmt->execute();
 
             return $this->pdo->lastInsertId(); // Retorna o ID do cliente cadastrado
@@ -53,19 +59,19 @@ class ClienteModel {
     /**
      * Cadastra um endereço vinculado a um cliente
      */
-    public function cadastrarEndereco($clienteId, $logradouro, $numero, $bairro, $cidade, $estado, $cep) {
+    public function cadastrarEndereco($dados, $cliente_id) {
         try {
             $stmt = $this->pdo->prepare("
                 INSERT INTO enderecos (cliente_id, logradouro, numero, bairro, cidade, estado, cep) 
                 VALUES (:cliente_id, :logradouro, :numero, :bairro, :cidade, :estado, :cep)
             ");
-            $stmt->bindParam(':cliente_id', $clienteId);
-            $stmt->bindParam(':logradouro', $logradouro);
-            $stmt->bindParam(':numero', $numero);
-            $stmt->bindParam(':bairro', $bairro);
-            $stmt->bindParam(':cidade', $cidade);
-            $stmt->bindParam(':estado', $estado);
-            $stmt->bindParam(':cep', $cep);
+            $stmt->bindParam(':cliente_id', $cliente_id);
+            $stmt->bindParam(':logradouro', $dados['logradouro']);
+            $stmt->bindParam(':numero', $dados['numero']);
+            $stmt->bindParam(':bairro', $dados['bairro']);
+            $stmt->bindParam(':cidade', $dados['cidade']);
+            $stmt->bindParam(':estado', $dados['estado']);
+            $stmt->bindParam(':cep', $dados['cep']);
             return $stmt->execute();
         } catch (Exception $e) {
             return false;
@@ -75,20 +81,18 @@ class ClienteModel {
     /**
      * Atualiza um cliente no banco de dados
      */
-    public function atualizarCliente($clienteId, $nome, $dataNascimento, $cpf, $rg, $telefone) {
+    public function atualizarCliente($clienteId, $dados) {
         try {
             $stmt = $this->pdo->prepare("
                 UPDATE clientes 
-                SET nome = :nome, data_nascimento = :data_nascimento, cpf = :cpf, 
-                    rg = :rg, telefone = :telefone 
+                SET nome = :nome, data_nascimento = :data_nascimento, rg = :rg, telefone = :telefone 
                 WHERE id = :cliente_id
             ");
             $stmt->bindParam(':cliente_id', $clienteId);
-            $stmt->bindParam(':nome', $nome);
-            $stmt->bindParam(':data_nascimento', $dataNascimento);
-            $stmt->bindParam(':cpf', $cpf);
-            $stmt->bindParam(':rg', $rg);
-            $stmt->bindParam(':telefone', $telefone);
+            $stmt->bindParam(':nome', $dados['nome']);
+            $stmt->bindParam(':data_nascimento', $dados['data_nascimento']);
+            $stmt->bindParam(':rg', $dados['rg']);
+            $stmt->bindParam(':telefone', $dados['telefone']);
             return $stmt->execute();
         } catch (Exception $e) {
             return false;
