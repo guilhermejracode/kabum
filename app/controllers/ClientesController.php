@@ -1,6 +1,6 @@
 <?php
 
-class ClientesController{
+class ClientesController {
 
     private $clienteService;
 

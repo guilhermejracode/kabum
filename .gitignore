@@ -1,3 +1,5 @@
 # Arquivo git com pastas ou arquivos que devem ser ignorados
 
 .idea/
+
+.phpunit*
