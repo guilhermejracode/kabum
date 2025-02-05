@@ -17,26 +17,51 @@ class ClienteService {
         unset($dados['enderecos']);
 
         // Regras de validação antes de salvar
+        $validacaoCliente = '';
         if (empty($dados['nome'])) {
-            throw new Exception("O nome do cliente é obrigatório!");
+            $validacaoCliente .="O nome do cliente é obrigatório!<br/>";
         }
-
+        if (empty($dados['data_nascimento'])) {
+            $validacaoCliente .="O nome do cliente é obrigatório!<br/>";
+        }
+        if (empty($dados['cpf'])) {
+            $validacaoCliente .="O CPF do cliente é obrigatório!<br/>";
+        }
         if ($this->clienteModel->existeCPF($dados['cpf'])) {
-            throw new Exception("CPF já cadastrado! Verifique e tente novamente.");
+            $validacaoCliente .="CPF já cadastrado! Verifique e tente novamente.<br/>";
         }
 
-        $dados['usuario_id'] = $_SESSION['usuario_id'];
-        $clienteId = $this->clienteModel->cadastrarCliente($dados);
+        if (!empty($validacaoCliente)) {
+            throw new Exception($validacaoCliente);
+        }
 
-        if ($clienteId) {
-            foreach ($enderecos as $endereco) {
-                if(!empty($endereco['logradouro'])){
-                    $this->clienteModel->cadastrarEndereco($endereco, $clienteId);
+        try {
+
+            $this->clienteModel->beginTransaction();
+
+            $dados['usuario_id'] = $_SESSION['usuario_id'];
+            $clienteId = $this->clienteModel->cadastrarCliente($dados);
+
+            if ($clienteId) {
+                foreach ($enderecos as $endereco) {
+                    if(!empty($endereco['logradouro']) && !empty($endereco['numero']) && !empty($endereco['bairro'])
+                    && !empty($endereco['cidade']) && !empty($endereco['estado']) && !empty($endereco['cep'])){
+                        $this->clienteModel->cadastrarEndereco($endereco, $clienteId);
+                    }
+                    else{
+                        throw new Exception("Todos os dados do endereço devem ser preenchidos!");
+                    }
                 }
+
+                $this->clienteModel->commit();
             }
-        }
-        else{
-            throw new Exception("Não foi possível inserir o cliente!");
+            else{
+                throw new Exception("Não foi possível inserir o cliente!");
+            }
+
+        } catch (Exception $e) {
+            $this->clienteModel->rollback();
+            throw $e;
         }
     }
 

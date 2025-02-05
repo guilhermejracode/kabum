@@ -55,7 +55,7 @@ Antes de começar, certifique-se de ter instalado:
         cpf VARCHAR(14) NOT NULL,
         rg VARCHAR(20),
         telefone VARCHAR(20),
-        usuario_id INT NOT NULL,
+        usuario_id INT,
         FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
     );
     
@@ -63,6 +63,7 @@ Antes de começar, certifique-se de ter instalado:
         id INT AUTO_INCREMENT PRIMARY KEY,
         logradouro VARCHAR(255) NOT NULL,
         numero varchar(10) NOT NULL,
+        bairro varchar(100) NOT NULL,
         cidade VARCHAR(100) NOT NULL,
         estado VARCHAR(100) NOT NULL,
         cep VARCHAR(10) NOT NULL,

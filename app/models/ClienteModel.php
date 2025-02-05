@@ -9,6 +9,18 @@ class ClienteModel {
         $this->pdo = $database->getConnection(); // Obtém a conexão do banco de dados
     }
 
+    public function beginTransaction() {
+        $this->pdo->beginTransaction();
+    }
+
+    public function commit() {
+        $this->pdo->commit();
+    }
+
+    public function rollback() {
+        $this->pdo->rollBack();
+    }
+
     public function existeCPF($cpf) {
         $stmt = $this->pdo->prepare('SELECT * FROM clientes WHERE cpf = :cpf');
         $stmt->execute([':cpf' => $cpf]);
